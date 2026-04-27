@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sumago Infotech</title>
+
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --text: #fff;
+  --bg: #111;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: all 0.5s ease;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: rgba(0,0,0,0.3);
+  position: sticky;
+  top: 0;
+}
+
+nav h2 { margin: 0; }
+nav ul { list-style: none; display: flex; gap: 20px; }
+nav ul li { cursor: pointer; }
+
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+}
+
+.typing {
+  font-size: 1.5rem;
+  color: #ccc;
+  height: 30px;
+}
+
+.section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.services, .stats, .blog {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  margin: 15px;
+  padding: 20px;
+  border-radius: 10px;
+  width: 220px;
+  transition: transform 0.3s;
+}
+
+.card:hover { transform: scale(1.05); }
+
+.counter {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.testimonial {
+  font-style: italic;
+  max-width: 600px;
+  margin: auto;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.4);
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <h2>Sumago Infotech</h2>
+  <ul>
+    <li>Home</li>
+    <li>Services</li>
+    <li>About</li>
+    <li>Contact</li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <h1 id="greeting"></h1>
+  <div class="typing" id="typing"></div>
+</section>
+
+<section class="section">
+  <h2>Our Services</h2>
+  <div class="services" id="services"></div>
+</section>
+
+<section class="section">
+  <h2>Our Impact</h2>
+  <div class="stats">
+    <div class="card"><div class="counter" data-target="150">0</div>Projects</div>
+    <div class="card"><div class="counter" data-target="100">0</div>Clients</div>
+    <div class="card"><div class="counter" data-target="10">0</div>Years</div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>What Clients Say</h2>
+  <div class="testimonial" id="testimonial"></div>
+</section>
+
+<section class="section">
+  <h2>Latest Insights</h2>
+  <div class="blog" id="blog"></div>
+</section>
+
+<footer id="footer"></footer>
+
+<script>
+
+// Greeting based on time
+const hour = new Date().getHours();
+const greeting = hour < 12 ? "Good Morning ☀️" :
+                 hour < 18 ? "Good Afternoon 🌤️" :
+                             "Good Evening 🌙";
+
+document.getElementById("greeting").innerText =
+  greeting + ", Welcome to Sumago Infotech";
+
+// Typing effect
+const texts = [
+  "We build scalable software",
+  "We create digital experiences",
+  "We innovate with AI",
+  "We deliver business solutions"
+];
+
+let i = 0, j = 0;
+function type() {
+  let current = texts[i];
+  document.getElementById("typing").innerText = current.slice(0, j++);
+  if (j > current.length) {
+    j = 0;
+    i = (i + 1) % texts.length;
+  }
+  setTimeout(type, 100);
+}
+type();
+
+// Dynamic services
+const services = [
+  "Web Development", "Mobile Apps", "AI Solutions",
+  "Cloud Computing", "UI/UX Design", "Cybersecurity"
+];
+
+const servicesContainer = document.getElementById("services");
+services.sort(() => 0.5 - Math.random()).slice(0,4)
+.forEach(s => {
+  let div = document.createElement("div");
+  div.className = "card";
+  div.innerText = s;
+  servicesContainer.appendChild(div);
+});
+
+// Counter animation
+document.querySelectorAll(".counter").forEach(counter => {
+  let update = () => {
+    let target = +counter.getAttribute("data-target");
+    let count = +counter.innerText;
+    let inc = target / 100;
+
+    if (count < target) {
+      counter.innerText = Math.ceil(count + inc);
+      setTimeout(update, 20);
+    } else {
+      counter.innerText = target;
+    }
+  };
+  update();
+});
+
+// Testimonials rotation
+const testimonials = [
+  "Excellent service and support!",
+  "Highly professional team.",
+  "They transformed our business digitally.",
+  "Top-notch IT solutions provider."
+];
+
+setInterval(() => {
+  document.getElementById("testimonial").innerText =
+    testimonials[Math.floor(Math.random()*testimonials.length)];
+}, 3000);
+
+// Blog section
+const blogs = [
+  "Future of AI in Business",
+  "Top Web Dev Trends",
+  "Why Cloud is the Future",
+  "Cybersecurity Essentials"
+];
+
+const blogContainer = document.getElementById("blog");
+blogs.sort(() => 0.5 - Math.random()).slice(0,3)
+.forEach(b => {
+  let div = document.createElement("div");
+  div.className = "card";
+  div.innerText = b;
+  blogContainer.appendChild(div);
+});
+
+// Dynamic theme
+const themes = [
+  ["#667eea", "#764ba2"],
+  ["#ff7e5f", "#feb47b"],
+  ["#43cea2", "#185a9d"]
+];
+
+let theme = themes[Math.floor(Math.random()*themes.length)];
+document.body.style.background =
+  `linear-gradient(135deg, ${theme[0]}, ${theme[1]})`;
+
+// Footer time
+setInterval(() => {
+  document.getElementById("footer").innerText =
+    "© " + new Date().getFullYear() +
+    " Sumago Infotech | " +
+    new Date().toLocaleTimeString();
+}, 1000);
+
+</script>
+
+</body>
+</html>
